@@ -2,23 +2,29 @@ import mongoose from "mongoose";
 
 const loginSchema = new mongoose.Schema({
   name: { 
-    type: String
- },
+    type: String,
+    
+  },
   email: { 
-    type: String, required: true, unique: true 
-},
+    type: String, 
+    required: true, 
+    unique: true 
+  },
   password: { 
     type: String 
-},
+  },
   googleId: { 
-    type: String, unique: true, sparse: true
- },
+    type: String, 
+    unique: true, 
+    sparse: true 
+  },
   profilePicture: {
-     type: String
-     }
+    type: String
+  }
 }, 
 {
-     timestamps: true
-     });
+  timestamps: true
+});
 
 export default mongoose.model("LoginData", loginSchema);
+
