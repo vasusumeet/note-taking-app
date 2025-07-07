@@ -2,22 +2,18 @@ import express from 'express';
 import { UserData } from '../models/userData.js';
 import authenticate from '../middleware/authMiddleware.js';
 
-
 const dataRoute = express.Router();
-
-// Apply authentication to all routes in this router
 dataRoute.use(authenticate);
 
-/**
- * GET all notes for a user
- * GET /api/notes/:userId/all
- */
+
+const isAuthorized = (jwtId, paramId) => String(jwtId) === String(paramId);
+
 dataRoute.get('/:userId/all', async (req, res) => {
+  const { userId } = req.params;
+  if (!isAuthorized(req.user.id, userId)) {
+    return res.status(403).json({ message: 'Unauthorized.' });
+  }
   try {
-    const { userId } = req.params;
-    if (req.user.id !== userId) {
-      return res.status(403).json({ message: 'Unauthorized.' });
-    }
     const user = await UserData.findOne({ userId });
     if (!user) return res.status(404).json({ message: 'User not found.' });
     res.json({ notes: user.notes });
@@ -31,15 +27,15 @@ dataRoute.get('/:userId/all', async (req, res) => {
  * POST /api/notes/:userId/create
  */
 dataRoute.post('/:userId/create', async (req, res) => {
+  const { userId } = req.params;
+  if (!isAuthorized(req.user.id, userId)) {
+    return res.status(403).json({ message: 'Unauthorized.' });
+  }
+  const { noteTitle, note } = req.body;
+  if (!noteTitle || !note) {
+    return res.status(400).json({ message: 'Title and note content are required.' });
+  }
   try {
-    const { userId } = req.params;
-    const { noteTitle, note } = req.body;
-    if (!noteTitle || !note) {
-      return res.status(400).json({ message: 'Title and note content are required.' });
-    }
-    if (req.user.id !== userId) {
-      return res.status(403).json({ message: 'Unauthorized.' });
-    }
     const user = await UserData.findOne({ userId });
     if (!user) return res.status(404).json({ message: 'User not found.' });
 
@@ -58,13 +54,12 @@ dataRoute.post('/:userId/create', async (req, res) => {
  * PUT /api/notes/:userId/edit/:noteId
  */
 dataRoute.put('/:userId/edit/:noteId', async (req, res) => {
+  const { userId, noteId } = req.params;
+  if (!isAuthorized(req.user.id, userId)) {
+    return res.status(403).json({ message: 'Unauthorized.' });
+  }
+  const { noteTitle, note } = req.body;
   try {
-    const { userId, noteId } = req.params;
-    const { noteTitle, note } = req.body;
-
-    if (req.user.id !== userId) {
-      return res.status(403).json({ message: 'Unauthorized.' });
-    }
     const user = await UserData.findOne({ userId });
     if (!user) return res.status(404).json({ message: 'User not found.' });
 
@@ -86,12 +81,11 @@ dataRoute.put('/:userId/edit/:noteId', async (req, res) => {
  * DELETE /api/notes/:userId/delete/:noteId
  */
 dataRoute.delete('/:userId/delete/:noteId', async (req, res) => {
+  const { userId, noteId } = req.params;
+  if (!isAuthorized(req.user.id, userId)) {
+    return res.status(403).json({ message: 'Unauthorized.' });
+  }
   try {
-    const { userId, noteId } = req.params;
-
-    if (req.user.id !== userId) {
-      return res.status(403).json({ message: 'Unauthorized.' });
-    }
     const user = await UserData.findOne({ userId });
     if (!user) return res.status(404).json({ message: 'User not found.' });
 

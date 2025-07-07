@@ -5,7 +5,7 @@ import { UserContext } from "../UserContext";
 export default function NoteEditor() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const note = location.state?.note;
   const userId = location.state?.userId || user?.id;
@@ -42,6 +42,10 @@ export default function NoteEditor() {
       if (!userId || !token) {
         setError("Authentication error. Please log in again.");
         setLoading(false);
+        setUser(null);
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        navigate("/login");
         return;
       }
       const url = isEdit
@@ -60,6 +64,16 @@ export default function NoteEditor() {
           note: content,
         }),
       });
+
+      if (response.status === 401 || response.status === 403) {
+        setError("Session expired. Please log in again.");
+        setUser(null);
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        setLoading(false);
+        setTimeout(() => navigate("/login"), 1000);
+        return;
+      }
 
       const data = await response.json();
 

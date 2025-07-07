@@ -7,26 +7,28 @@ import { jwtSecret } from '../config.js';
 
 const loginRoute = express.Router();
 
-
-loginRoute.post('/signup', async (request, response) => {
+/**
+ * SIGNUP ROUTE
+ */
+loginRoute.post('/signup', async (req, res) => {
   try {
-    const { name, email, password } = request.body;
+    const { name, email, password, profilePicture } = req.body;
 
     if (!name || !email || !password) {
-      return response.status(400).send({ message: 'Enter all fields: Name, Email, and Password' });
+      return res.status(400).json({ message: 'Enter all fields: Name, Email, and Password' });
     }
 
     // Check if the user already exists
     const existing = await LoginData.findOne({ email });
     if (existing) {
-      return response.status(409).send({ message: 'Email already in use.' });
+      return res.status(409).json({ message: 'Email already in use.' });
     }
 
     // Hash the password
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Create and save the LoginData document
-    const newUser = new LoginData({ name, email, password: hashedPassword });
+    const newUser = new LoginData({ name, email, password: hashedPassword, profilePicture });
     await newUser.save();
 
     // Create and save the UserData document with userId, name, and email
@@ -38,31 +40,37 @@ loginRoute.post('/signup', async (request, response) => {
     });
     await newUserData.save();
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newUser._id.toString(), name: newUser.name, email: newUser.email },
+      jwtSecret,
+      { expiresIn: '7d' }
+    );
+
     // Prepare user data to send in response (exclude password)
     const userResponse = {
       id: newUser._id,
+      userId: newUser._id.toString(),
       name: newUser.name,
       email: newUser.email,
-      userData: {
-        userId: newUserData.userId,
-        name: newUserData.name,
-        email: newUserData.email,
-        notes: newUserData.notes
-      }
+      profilePicture: newUser.profilePicture || null,
+      notes: []
     };
 
-    return response.status(201).send({
+    return res.status(201).json({
       message: 'User created successfully',
-      user: userResponse
+      user: userResponse,
+      token
     });
   } catch (error) {
-    console.log(error);
-    return response.status(500).send({ message: error.message });
+    console.error(error);
+    return res.status(500).json({ message: error.message });
   }
 });
 
-
-
+/**
+ * LOGIN ROUTE
+ */
 loginRoute.post('/login', async (req, res) => {
   try {
     const { email, password, googleId } = req.body;
@@ -98,7 +106,7 @@ loginRoute.post('/login', async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { id: user._id, name: user.name, email: user.email },
+      { id: user._id.toString(), name: user.name, email: user.email },
       jwtSecret,
       { expiresIn: '7d' }
     );
@@ -107,6 +115,7 @@ loginRoute.post('/login', async (req, res) => {
       message: 'User authenticated successfully',
       user: {
         id: user._id,
+        userId: user._id.toString(),
         name: user.name,
         email: user.email,
         profilePicture: user.profilePicture || null,

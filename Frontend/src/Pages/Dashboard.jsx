@@ -8,9 +8,9 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Fetch notes on mount and when user changes
   useEffect(() => {
     const fetchNotes = async () => {
-      // Always use the latest token from context or localStorage
       const token = user?.token || localStorage.getItem("token");
       const userId = user?.id;
       if (!userId || !token) return;
@@ -49,12 +49,42 @@ export default function Dashboard() {
     navigate("/noteeditor", { state: { note, userId: user.id } });
   };
 
+  const handleDeleteNote = async (noteId) => {
+    const token = user?.token || localStorage.getItem("token");
+    const userId = user?.id;
+    if (!userId || !token) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:5555/api/notes/${userId}/delete/${noteId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        setNotes((prevNotes) => prevNotes.filter((n) => n._id !== noteId));
+      }
+    } catch (err) {
+      // Optionally handle error
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    setUser(null);
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <div className="min-h-screen w-full bg-white flex flex-col md:flex-row">
       <main className="flex-1 flex flex-col items-center justify-center py-6 md:py-0 md:h-screen">
         <header className="w-full max-w-2xl flex justify-between items-center mb-8 px-4 md:px-0">
           <div className="text-lg font-semibold text-indigo-600">Dashboard</div>
-          <a href="/login" className="text-sm text-indigo-600 hover:underline font-medium">
+          <a href="/login" onClick={handleSignOut} className="text-sm text-indigo-600 hover:underline font-medium">
             Sign Out
           </a>
         </header>
@@ -92,7 +122,12 @@ export default function Dashboard() {
                       >
                         {note.noteTitle}
                       </span>
-                      <button className="text-gray-400 hover:text-red-500 transition" aria-label="Delete">
+                      <button
+                        className="text-gray-400 hover:text-red-500 transition"
+                        aria-label="Delete"
+                        onClick={() => handleDeleteNote(note._id)}
+                        disabled={loading}
+                      >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
