@@ -1,4 +1,19 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    navigate("/SignUp");
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/LoginPage");
+  };
+
   return (
     <div className="h-screen bg-white flex overflow-hidden">
       {/* Desktop Layout */}
@@ -14,18 +29,18 @@ export default function LandingPage() {
             Organize your thoughts and boost productivity.
           </p>
           <div className="flex gap-6">
-            <a
-              href="/SignUp"
+            <button
+              onClick={handleSignUp}
               className="px-8 py-3 bg-indigo-600 text-white rounded font-semibold text-lg hover:bg-indigo-700 transition"
             >
               Sign Up
-            </a>
-            <a
-              href="/LoginPage"
+            </button>
+            <button
+              onClick={handleLogin}
               className="px-8 py-3 border border-indigo-600 text-indigo-600 rounded font-semibold text-lg hover:bg-indigo-50 transition"
             >
               Login
-            </a>
+            </button>
           </div>
         </div>
         {/* Right Panel: Full-Height Image */}
@@ -45,18 +60,18 @@ export default function LandingPage() {
           Organize your thoughts and boost productivity.
         </p>
         <div className="flex flex-col gap-4 w-full max-w-xs">
-          <a
-            href="/SignUp"
+          <button
+            onClick={handleSignUp}
             className="w-full px-6 py-3 bg-indigo-600 text-white rounded font-semibold text-center hover:bg-indigo-700 transition"
           >
             Sign Up
-          </a>
-          <a
-            href="/LoginPage"
+          </button>
+          <button
+            onClick={handleLogin}
             className="w-full px-6 py-3 border border-indigo-600 text-indigo-600 rounded font-semibold text-center hover:bg-indigo-50 transition"
           >
             Login
-          </a>
+          </button>
         </div>
       </div>
     </div>
