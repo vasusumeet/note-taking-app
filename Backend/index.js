@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { PORT } from "./config.js";
 import { mongoDBURL } from "./config.js";
 import loginRoute from "./routes/loginRoute.js";
+import dataRoute from "./routes/dataRoute.js";
 import cors from 'cors';
 
 const app=express();
@@ -15,6 +16,7 @@ app.get('/', (request, response)=>{
 app.use(express.json());
 
 app.use('/api/auth', loginRoute);
+app.use('/api/notes', dataRoute);
 
 mongoose
  .connect(mongoDBURL)

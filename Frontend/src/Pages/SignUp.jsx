@@ -78,7 +78,7 @@ export default function SignUp() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="you@email.com"
+                placeholder="Email ID"
               />
             </div>
             <div className="mb-6">
@@ -98,7 +98,7 @@ export default function SignUp() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-indigo-600 text-white rounded font-semibold text-lg hover:bg-indigo-700 transition mb-4"
+              className="w-full py-3 bg-blue-500 text-white rounded font-semibold text-lg hover:bg-blue-700 transition mb-4"
             >
               {loading ? "Signing Up..." : "Sign Up"}
             </button>

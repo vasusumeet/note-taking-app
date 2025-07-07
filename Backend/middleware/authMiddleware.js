@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { jwtSecret } from '../config.js'; // Adjust the path if needed
+import { jwtSecret } from '../config.js'; 
 
 const authenticate = (req, res, next) => {
   if (req.method === 'OPTIONS') {

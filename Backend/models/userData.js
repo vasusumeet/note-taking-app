@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const notesSchema = new mongoose.Schema({
-  // You can omit noteId unless you need a custom one
+  
   noteTitle: {
     type: String,
     required: true,
@@ -29,7 +29,7 @@ userId: {
   email: {
     type: String,
     required: true,
-    unique: true, // Usually emails are unique for users
+    unique: true, 
   },
   notes: [notesSchema],
 });
