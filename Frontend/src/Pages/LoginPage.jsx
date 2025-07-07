@@ -20,7 +20,7 @@ export default function LoginPage() {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5555/api/auth/login", {
+      const response = await fetch("https://note-taking-app-production-e93d.up.railway.app/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -50,13 +50,13 @@ export default function LoginPage() {
     }
   };
 
-  // Google login handler
+  
   const handleGoogleSuccess = async (credentialResponse) => {
     setLoading(true);
     setError("");
     setSuccess("");
     try {
-      const response = await fetch("http://localhost:5555/api/auth/google", {
+      const response = await fetch("https://note-taking-app-production-e93d.up.railway.app/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),

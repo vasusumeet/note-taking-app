@@ -23,7 +23,7 @@ export default function Dashboard() {
       if (!userId || !token) return;
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5555/api/notes/${userId}/all`, {
+        const response = await fetch(`https://note-taking-app-production-e93d.up.railway.app/api/notes/${userId}/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -70,7 +70,7 @@ export default function Dashboard() {
     if (!userId || !token) return;
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5555/api/notes/${userId}/delete/${noteId}`, {
+      const response = await fetch(`https://note-taking-app-production-e93d.up.railway.app/api/notes/${userId}/delete/${noteId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -49,8 +49,8 @@ export default function NoteEditor() {
         return;
       }
       const url = isEdit
-        ? `http://localhost:5555/api/notes/${userId}/edit/${note._id}`
-        : `http://localhost:5555/api/notes/${userId}/create`;
+        ? `https://note-taking-app-production-e93d.up.railway.app/api/notes/${userId}/edit/${note._id}`
+        : `https://note-taking-app-production-e93d.up.railway.app/api/notes/${userId}/create`;
       const method = isEdit ? "PUT" : "POST";
 
       const response = await fetch(url, {

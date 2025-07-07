@@ -21,7 +21,7 @@ export default function SignUp() {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5555/api/auth/signup", {
+      const response = await fetch("https://note-taking-app-production-e93d.up.railway.app/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -59,7 +59,7 @@ export default function SignUp() {
     setError("");
     setSuccess("");
     try {
-      const response = await fetch("http://localhost:5555/api/auth/google", {
+      const response = await fetch("https://note-taking-app-production-e93d.up.railway.app/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),
