@@ -92,6 +92,12 @@ export default function NoteEditor() {
     }
   };
 
+  // Optional: Guard rendering for unauthenticated users
+  if (!user || !user.id || !user.token) {
+    navigate("/LoginPage");
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-2 py-8">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow p-6 relative">
@@ -117,8 +123,8 @@ export default function NoteEditor() {
           value={content}
           onChange={e => setContent(e.target.value)}
         />
-        {error && <div className="mt-4 text-red-600 font-medium">{error}</div>}
-        {success && <div className="mt-4 text-green-600 font-medium">{success}</div>}
+        {error && <div aria-live="polite" className="mt-4 text-red-600 font-medium">{error}</div>}
+        {success && <div aria-live="polite" className="mt-4 text-green-600 font-medium">{success}</div>}
       </div>
     </div>
   );
