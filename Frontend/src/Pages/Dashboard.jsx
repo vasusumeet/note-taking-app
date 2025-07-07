@@ -8,6 +8,13 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!user || !user.id || !user.token) {
+      navigate("/LoginPage");
+    }
+  }, [user, navigate]);
+
   // Fetch notes on mount and when user changes
   useEffect(() => {
     const fetchNotes = async () => {
@@ -33,7 +40,7 @@ export default function Dashboard() {
           setNotes(data.notes || []);
         }
       } catch (err) {
-        // Optionally handle error
+        // Optionally log or display error
       } finally {
         setLoading(false);
       }
@@ -42,10 +49,18 @@ export default function Dashboard() {
   }, [user, setUser, navigate]);
 
   const handleCreateNote = () => {
+    if (!user || !user.id) {
+      navigate("/LoginPage");
+      return;
+    }
     navigate("/noteeditor", { state: { userId: user.id } });
   };
 
   const handleEditNote = (note) => {
+    if (!user || !user.id) {
+      navigate("/LoginPage");
+      return;
+    }
     navigate("/noteeditor", { state: { note, userId: user.id } });
   };
 

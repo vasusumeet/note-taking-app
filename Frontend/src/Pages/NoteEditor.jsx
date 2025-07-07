@@ -45,7 +45,7 @@ export default function NoteEditor() {
         setUser(null);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
-        navigate("/login");
+        navigate("/LoginPage");
         return;
       }
       const url = isEdit
@@ -71,7 +71,7 @@ export default function NoteEditor() {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
         setLoading(false);
-        setTimeout(() => navigate("/login"), 1000);
+        setTimeout(() => navigate("/LoginPage"), 1000);
         return;
       }
 
