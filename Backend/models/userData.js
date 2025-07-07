@@ -18,7 +18,11 @@ const notesSchema = new mongoose.Schema({
 });
 
 const userDataSchema = new mongoose.Schema({
-  name: {
+userId: {
+            type: String,
+            required: true,
+        },
+    name: {
     type: String,
     required: true,
   },
