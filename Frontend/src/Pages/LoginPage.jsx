@@ -50,7 +50,6 @@ export default function LoginPage() {
     }
   };
 
-  
   const handleGoogleSuccess = async (credentialResponse) => {
     setLoading(true);
     setError("");
@@ -140,9 +139,14 @@ export default function LoginPage() {
             />
             <div className="mt-6 text-sm text-gray-600 text-center">
               Don't have an account?{" "}
-              <a href="/SignUp" className="text-indigo-600 hover:underline font-medium">
+              <button
+                type="button"
+                onClick={() => navigate("/SignUp")}
+                className="text-indigo-600 hover:underline font-medium bg-transparent border-none p-0 m-0 cursor-pointer"
+                style={{ background: "none", border: "none", padding: 0, margin: 0 }}
+              >
                 Sign Up
-              </a>
+              </button>
             </div>
           </form>
         </div>
@@ -212,9 +216,14 @@ export default function LoginPage() {
           />
           <div className="mt-6 text-sm text-gray-600 text-center">
             Don't have an account?{" "}
-            <a href="/SignUp" className="text-indigo-600 hover:underline font-medium">
+            <button
+              type="button"
+              onClick={() => navigate("/SignUp")}
+              className="text-indigo-600 hover:underline font-medium bg-transparent border-none p-0 m-0 cursor-pointer"
+              style={{ background: "none", border: "none", padding: 0, margin: 0 }}
+            >
               Sign Up
-            </a>
+            </button>
           </div>
         </form>
       </div>

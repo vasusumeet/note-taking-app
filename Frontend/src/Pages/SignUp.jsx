@@ -37,7 +37,6 @@ export default function SignUp() {
         setEmail("");
         setPassword("");
 
-        // Save user and token to context and localStorage
         setUser({ ...data.user, token: data.token });
         localStorage.setItem("user", JSON.stringify({ ...data.user, token: data.token }));
         localStorage.setItem("token", data.token);
@@ -157,9 +156,14 @@ export default function SignUp() {
             />
             <div className="mt-6 text-sm text-gray-600 text-center">
               Already have an account?{" "}
-              <a href="/LoginPage" className="text-indigo-600 hover:underline font-medium">
+              <button
+                type="button"
+                onClick={() => navigate("/LoginPage")}
+                className="text-indigo-600 hover:underline font-medium bg-transparent border-none p-0 m-0 cursor-pointer"
+                style={{ background: "none", border: "none", padding: 0, margin: 0 }}
+              >
                 Login
-              </a>
+              </button>
             </div>
           </form>
         </div>
@@ -243,9 +247,14 @@ export default function SignUp() {
           />
           <div className="mt-6 text-sm text-gray-600 text-center">
             Already have an account?{" "}
-            <a href="/LoginPage" className="text-indigo-600 hover:underline font-medium">
+            <button
+              type="button"
+              onClick={() => navigate("/LoginPage")}
+              className="text-indigo-600 hover:underline font-medium bg-transparent border-none p-0 m-0 cursor-pointer"
+              style={{ background: "none", border: "none", padding: 0, margin: 0 }}
+            >
               Login
-            </a>
+            </button>
           </div>
         </form>
       </div>
